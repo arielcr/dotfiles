@@ -35,6 +35,7 @@ Plug 'justinmk/vim-sneak'                               " Jump to two char searc
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}     " Multicursor editing
 Plug 'kshenoy/vim-signature'                            " Manage marks
 Plug 'junegunn/vim-peekaboo'                            " Manage registers
+Plug 'junegunn/vim-easy-align'                          " Align code
 call plug#end()
 
 " =========================== THEMES ============================
@@ -62,6 +63,7 @@ set showmatch
 set showmode
 set termguicolors
 set splitright splitbelow
+set relativenumber
 
 " Fix for CoC not highlighting
 set redrawtime=10000
@@ -119,6 +121,9 @@ let g:fzf_action = {
   \ 'ctrl-t': 'tab split',
   \ 'ctrl-i': 'split',
   \ 'ctrl-v': 'vsplit' }
+
+let g:fzf_layout = { 'down':  '40%'}
+let g:fzf_preview_window = []
 
 " =========================== MAPPERS ============================
 
@@ -230,6 +235,11 @@ nmap <Leader>8 :res -2<CR>
 nmap <Leader>9 :vertical res +2<CR> 
 nmap <Leader>0 :vertical res -2<CR> 
 
+" Start interactive EasyAlign in visual mode (e.g. vipga)
+xmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g. gaip)
+nmap ga <Plug>(EasyAlign)
+
 " Send escape key to terminal mode
 if has('nvim')
   tnoremap <Esc> <C-\><C-n>
@@ -240,7 +250,7 @@ endif
 " For example, typing 12gb would jump to buffer 12.
 let c = 1
 while c <= 99
-  execute "nnoremap " . c . "gb :" . c . "b\<CR>"
+  execute "nnoremap " . c . "b :" . c . "b\<CR>"
   let c += 1
 endwhile
 
