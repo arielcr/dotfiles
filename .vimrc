@@ -14,17 +14,15 @@ Plug 'morhetz/gruvbox'
 Plug 'scrooloose/nerdtree', { 'on':  'NERDTreeToggle' } " File navigator
 Plug 'editorconfig/editorconfig-vim'                    " Support for editor config
 Plug 'neoclide/coc.nvim', {'branch': 'release'}         " Intelisense and much more!
-"Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }      " GO support
 Plug 'vim-airline/vim-airline'                          " Cool status bar
 Plug 'vim-airline/vim-airline-themes'
 Plug 'jlanzarotta/bufexplorer'                          " Buffer explorer
-Plug 'Xuyuanp/nerdtree-git-plugin'                      " Display git file status   
 Plug 'tpope/vim-fugitive'                               " Git support
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }     " Install fuzzy finder binary
 Plug 'junegunn/fzf.vim'                                 " Enable fuzzy finder in Vim
 Plug 'preservim/nerdcommenter'                          " Easily comment code 
-Plug 'airblade/vim-gitgutter'                           " Display git status on code 
-Plug 'mileszs/ack.vim'                                  " For searching
+"Plug 'airblade/vim-gitgutter'                           " Display git status on code 
+"Plug 'mileszs/ack.vim'                                  " For searching
 Plug 'preservim/tagbar'                                 " View file methods
 Plug 'tpope/vim-obsession'                              " Save project session
 Plug 'dhruvasagar/vim-prosession'
@@ -34,12 +32,11 @@ Plug 'Raimondi/delimitMate'                             " Auto insert brackets
 Plug 'justinmk/vim-sneak'                               " Jump to two char search
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}     " Multicursor editing
 Plug 'kshenoy/vim-signature'                            " Manage marks
-Plug 'junegunn/vim-peekaboo'                            " Manage registers
 Plug 'junegunn/vim-easy-align'                          " Align code
+Plug 'wincent/ferret'                                   " Search
 call plug#end()
 
 " =========================== THEMES ============================
-"colorscheme jellybeans
 autocmd vimenter * ++nested colorscheme gruvbox
 let g:gruvbox_contrast_dark='hard'
 
@@ -64,6 +61,7 @@ set showmode
 set termguicolors
 set splitright splitbelow
 set relativenumber
+set noshowmode
 
 " Fix for CoC not highlighting
 set redrawtime=10000
@@ -77,7 +75,7 @@ let &t_8f = "\<Esc>[38:2:%lu:%lu:%lum"
 let &t_8b = "\<Esc>[48:2:%lu:%lu:%lum"
 
 " Airline Config
-let g:airline_theme='bubblegum'
+let g:airline_theme='deus'
 let g:airline_powerline_fonts = 1
 let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
@@ -125,17 +123,39 @@ let g:fzf_action = {
 let g:fzf_layout = { 'down':  '40%'}
 let g:fzf_preview_window = []
 
+" Don't bind ferret commands.
+let g:FerretMap = 0
+
+" Don't hide cursor line in quickfix.
+let g:FerretQFOptions = 0
+let g:FerretVeryMagic = 0
+
 " =========================== MAPPERS ============================
 
+" Bind our own Ferret commands.
+nmap <leader>/ <Plug>(FerretAck)
+nmap <leader>r <Plug>(FerretAcks)
+nmap <leader>* <Plug>(FerretAckWord)
+
+" Copy current file name
+nnoremap <Leader>cf :let @+=expand('%:t')<CR>
+
+" Close all buffers except current one
+nnoremap <Leader>xb :%bdelete<CR>
+
 " Shortcut for Ack
-cnoreabbrev Ack Ack!
-nnoremap <Leader>1 :Ack!<Space>
+"cnoreabbrev Ack Ack!
+"nnoremap <Leader>/ :Ack!<Space>
+
+" Map scroll keys
+nmap <C-J> <C-e>
+nmap <C-K> <C-y>
 
 " Simpler mappers to switch between splits
-nmap <C-J> <C-W><C-J>
-nmap <C-K> <C-W><C-K>
-nmap <C-H> <C-W><C-H>
-nmap <C-L> <C-W><C-L>
+"nmap <C-J> <C-W><C-J>
+"nmap <C-K> <C-W><C-K>
+"nmap <C-H> <C-W><C-H>
+"nmap <C-L> <C-W><C-L>
 
 " Close current buffer
 map <C-x> :bd<CR>
@@ -150,15 +170,15 @@ nmap <Leader>g :G<Space>
 nmap <Leader><space> :nohlsearch<cr>
 
 " Make it easy to edit the Vimrc file.
-nmap <Leader>ev :sp ~/.vimrc<cr>
+nmap <Leader>rc :sp ~/.vimrc<cr>
  
 " Move Visual blocks with J an K
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
 
 " Cycle between buffers
-nnoremap <silent> <F2> :bn<CR>
-nnoremap <silent> <S-F2> :bp<CR>
+nnoremap <C-l> :bn<CR>
+nnoremap <C-h> :bp<CR>
 
 " Toggle tagbar
 nmap <Leader>m :TagbarOpenAutoClose<CR>
@@ -205,6 +225,8 @@ nnoremap <Leader>vc vimspector#ClearBreakpoints()<CR>
 
 " CoC Diagnostic current file
 nnoremap <Leader>cd :CocDiagnostics<CR>
+
+nnoremap <silent><nowait><Leader>e :BufExplorer<CR>
 
 " Go back to normal mode in terminal mode
 tnoremap <Esc> <C-\><C-n>
