@@ -1,0 +1,13 @@
+/*
+!.vimrc
+!.tmux.conf
+
+!/.config
+/.config/*
+
+!/.config/kitty
+/.config/kitty/*
+
+!/.config/kitty/kitty.conf
+
+!/.gitignore
