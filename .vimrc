@@ -295,7 +295,7 @@ if has ('autocmd')          " Remain compatible with earlier versions
   augroup END
 endif " has autocmd
 
-
+autocmd BufRead,BufNewFile Jenkinsfile set filetype=groovy
 " =========================== CoC Configuration =========================
 
 " Set internal encoding of vim, not needed on neovim, since coc.nvim using some
